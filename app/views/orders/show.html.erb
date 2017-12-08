@@ -2,4 +2,16 @@
 
 <p> Your order has been received </h2>
 
-<%= link_to "Home", root_path %>
+<p>
+  <%= link_to "Back to Home", root_path %>
+</p>
+
+<p><%= @order.first_name %></p>
+<p><%= @order.email %></p>
+
+<% @order.order_items.each do |item| %>
+
+
+  <%= item.product.title %>
+
+<% end %>
