@@ -53,16 +53,17 @@ class Order < ApplicationRecord
     @total
   end
 
-end
 
-def total_price_in_pounds
-  @total = 0
 
-    order_items.all.each do |item|
-      @total = @total + item.product.price_in_pounds * item.quantity
+  def total_price_in_pounds
+    @total = 0
 
-    end
+      order_items.all.each do |item|
+        @total = @total + item.product.price_in_pounds * item.quantity
 
-  @total
+      end
 
+      @total
+
+  end
 end
