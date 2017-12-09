@@ -13,6 +13,8 @@ Total number of items:  <%= @current_cart.total_size %>
   <%= f.input :city %>
   <%= f.input :postal_code %>
 
+
+
   <div id="card-errors">
     <% @order.errors[:stripe_token].each do |message| %>
       <p class="error"><%= message %></p>
@@ -20,8 +22,15 @@ Total number of items:  <%= @current_cart.total_size %>
 
   </div>
 
-  <div id="card"></div>
 
+  <label>Card number</label>
+  <div class="my-input" id="card-number"></div>
+
+  <label>Expiry</label>
+  <div class="my-input" id="card-expiry"></div>
+
+  <label>Security code (3 digits)</label>
+  <div class="my-input" id="card-cvc"></div>
 
   <%= f.button :submit, "Submit order" %>
 
@@ -30,11 +39,38 @@ Total number of items:  <%= @current_cart.total_size %>
 
 <script>
 
+  var style = {
+    base: {
+      color: '#ffffff',
+      fontSize: '14px',
+      color: "#32325d",
+      fontSmoothing: 'antialiased',
+    },
+    invalid: {
+      color: '#e5424d',
+      ':focus': {
+      color: '#303238',
+      },
+    },
+  };
+
   var stripe = Stripe ("<%= Rails.application.secrets.stripe_public_key %>")
   var elements = stripe.elements()
 
-  var card = elements.create("card", { hidePostalCode: true })
-  card.mount("#card")
+  // var card = elements.create("card", { hidePostalCode: true, style: style})
+  // card.mount("#card");
+
+  var cardNumber = elements.create('cardNumber', { style: style });
+  cardNumber.mount('#card-number');
+
+  var cardExpiry = elements.create('cardExpiry', {style: style });
+  cardExpiry.mount('#card-expiry');
+
+  var cardCvc = elements.create('cardCvc', {  style: style });
+  cardCvc.mount('#card-cvc');
+
+
+
 
   $("form.new_order").on("submit", function (ev) {
     ev.preventDefault()
